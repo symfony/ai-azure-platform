@@ -14,28 +14,28 @@ namespace Symfony\AI\Platform\Bridge\Azure\Meta;
 use Symfony\AI\Platform\Bridge\Meta\Llama;
 use Symfony\AI\Platform\Exception\RuntimeException;
 use Symfony\AI\Platform\Model;
-use Symfony\AI\Platform\Response\RawResponseInterface;
-use Symfony\AI\Platform\Response\TextResponse;
-use Symfony\AI\Platform\ResponseConverterInterface;
+use Symfony\AI\Platform\Result\RawResultInterface;
+use Symfony\AI\Platform\Result\TextResult;
+use Symfony\AI\Platform\ResultConverterInterface;
 
 /**
  * @author Christopher Hertel <mail@christopher-hertel.de>
  */
-final readonly class LlamaResponseConverter implements ResponseConverterInterface
+final readonly class LlamaResultConverter implements ResultConverterInterface
 {
     public function supports(Model $model): bool
     {
         return $model instanceof Llama;
     }
 
-    public function convert(RawResponseInterface $response, array $options = []): TextResponse
+    public function convert(RawResultInterface $result, array $options = []): TextResult
     {
-        $data = $response->getRawData();
+        $data = $result->getData();
 
         if (!isset($data['choices'][0]['message']['content'])) {
             throw new RuntimeException('Response does not contain output');
         }
 
-        return new TextResponse($data['choices'][0]['message']['content']);
+        return new TextResult($data['choices'][0]['message']['content']);
     }
 }
