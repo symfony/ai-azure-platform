@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\AI\Platform\Bridge\Azure\OpenAI;
+namespace Symfony\AI\Platform\Bridge\Azure\OpenAi;
 
-use Symfony\AI\Platform\Bridge\OpenAI\GPT;
+use Symfony\AI\Platform\Bridge\OpenAi\GPT;
 use Symfony\AI\Platform\Exception\InvalidArgumentException;
 use Symfony\AI\Platform\Model;
 use Symfony\AI\Platform\ModelClientInterface;

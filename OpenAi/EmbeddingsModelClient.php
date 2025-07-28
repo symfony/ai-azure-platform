@@ -9,10 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\AI\Platform\Bridge\Azure\OpenAI;
+namespace Symfony\AI\Platform\Bridge\Azure\OpenAi;
 
-use Symfony\AI\Platform\Bridge\OpenAI\Whisper;
-use Symfony\AI\Platform\Bridge\OpenAI\Whisper\Task;
+use Symfony\AI\Platform\Bridge\OpenAi\Embeddings;
 use Symfony\AI\Platform\Exception\InvalidArgumentException;
 use Symfony\AI\Platform\Model;
 use Symfony\AI\Platform\ModelClientInterface;
@@ -23,7 +22,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  * @author Christopher Hertel <mail@christopher-hertel.de>
  */
-final readonly class WhisperModelClient implements ModelClientInterface
+final readonly class EmbeddingsModelClient implements ModelClientInterface
 {
     private EventSourceHttpClient $httpClient;
 
@@ -44,24 +43,22 @@ final readonly class WhisperModelClient implements ModelClientInterface
 
     public function supports(Model $model): bool
     {
-        return $model instanceof Whisper;
+        return $model instanceof Embeddings;
     }
 
     public function request(Model $model, array|string $payload, array $options = []): RawHttpResult
     {
-        $task = $options['task'] ?? Task::TRANSCRIPTION;
-        $endpoint = Task::TRANSCRIPTION === $task ? 'transcriptions' : 'translations';
-        $url = \sprintf('https://%s/openai/deployments/%s/audio/%s', $this->baseUrl, $this->deployment, $endpoint);
-
-        unset($options['task']);
+        $url = \sprintf('https://%s/openai/deployments/%s/embeddings', $this->baseUrl, $this->deployment);
 
         return new RawHttpResult($this->httpClient->request('POST', $url, [
             'headers' => [
                 'api-key' => $this->apiKey,
-                'Content-Type' => 'multipart/form-data',
             ],
             'query' => ['api-version' => $this->apiVersion],
-            'body' => array_merge($options, $payload),
+            'json' => array_merge($options, [
+                'model' => $model->getName(),
+                'input' => $payload,
+            ]),
         ]));
     }
 }

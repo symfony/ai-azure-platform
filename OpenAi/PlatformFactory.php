@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\AI\Platform\Bridge\Azure\OpenAI;
+namespace Symfony\AI\Platform\Bridge\Azure\OpenAi;
 
-use Symfony\AI\Platform\Bridge\OpenAI\Embeddings;
-use Symfony\AI\Platform\Bridge\OpenAI\GPT;
-use Symfony\AI\Platform\Bridge\OpenAI\Whisper;
-use Symfony\AI\Platform\Bridge\OpenAI\Whisper\AudioNormalizer;
+use Symfony\AI\Platform\Bridge\OpenAi\Embeddings;
+use Symfony\AI\Platform\Bridge\OpenAi\GPT;
+use Symfony\AI\Platform\Bridge\OpenAi\Whisper;
+use Symfony\AI\Platform\Bridge\OpenAi\Whisper\AudioNormalizer;
 use Symfony\AI\Platform\Contract;
 use Symfony\AI\Platform\Platform;
 use Symfony\Component\HttpClient\EventSourceHttpClient;
